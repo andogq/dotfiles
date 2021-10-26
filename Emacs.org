@@ -1,9 +1,119 @@
 #+title Emacs Configuration
 #+property: header-args:emacs-lisp :tangle ./init.el
 
+* Emacs
+  
+** Packages
+
+   Set up package archives and install ~use-package~ for package
+   management. Also install ~diminish~ through use-package to hide mode names in
+   the status line.
+   
+  #+begin_src emacs-lisp
+    (require 'package)
+    (setq package-archives'(("melpa" . "https://melpa.org/packages/")
+			    ("org" . "https://orgmode.org/elpa/")
+			    ("elpa" . "https://elpa.gnu.org/packages/")))
+
+    (package-initialize)
+    (unless package-archive-contents
+      (package-refresh-contents))
+
+    ;; Make sure use-package is installed
+    (unless (package-installed-p 'use-package) (package-install 'use-package))
+
+    (require 'use-package)
+    (setq use-package-always-ensure t)
+
+    (use-package diminish)
+  #+end_src
+
+** Completion
+
+   Ivy is used as the completion engine. Counsel is also installed in order to
+   enrich other parts of emacs, such as describe menus and other
+   functions. Swiper is also installed which is used for searching within
+   buffers.
+
+   #+begin_src emacs-lisp
+     (use-package ivy
+       :diminish
+       :bind (("C-s" . swiper)
+	      :map ivy-minibuffer-map
+	      ("TAB" . ivy-alt-done)
+	      ("C-l" . ivy-alt-done)
+	      ("C-j" . ivy-next-line)
+	      ("C-k" . ivy-previous-line))
+       :config (ivy-mode 1))
+
+     (use-package counsel
+       :diminish
+       :bind (("C-x b" . counsel-switch-buffer))
+       :config (counsel-mode 1))
+   #+end_src
+
+   Ivy Rich is installed as an add-on for Ivy, giving it a more informative and
+   nice interface in some cases.
+
+   #+begin_src emacs-lisp
+     (use-package ivy-rich
+       :init (ivy-rich-mode 1))
+   #+end_src
+   
+** Documentation
+
+   Shows the available key bindings in a little popup window. Can be configured
+   to show after a delay in order to reduce the amount of random buffers that
+   keep opening.
+
+   #+begin_src emacs-lisp
+     (use-package which-key
+       :init (which-key-mode)
+       :diminish which-key-mode
+       :config (setq which-key-idle-delay 0.3))
+   #+end_src
+
+* Development
+
+** Project Management
+
+    Projectile enables project aware features within Emacs, such as searching
+    within the project for symbols, files and other things. It can also be
+    configured to run code, tests and can be used to easily open previous
+    projects. Includes Counsel plugin in order for Projectile windows to show
+    using Ivy.
+
+    #+begin_src emacs-lisp
+      (use-package projectile
+	:diminish projectile-mode
+	:config (projectile-mode)
+	:custom ((projectile-completion-system 'ivy))
+	:bind-keymap ("C-c p" . projectile-command-map)
+	:init
+	(when (file-directory-p "~/code")
+	  (setq projectile-project-search-path '("~/code")))
+	(setq projectile-switch-project-action #'projectile-dired))
+
+      (use-package counsel-projectile
+	:config (counsel-projectile-mode))
+    #+end_src
+
+    In terms of Git integration, Magit provides a UI over Git commands, making
+    them all usable within Emacs. Forge extends upon this, offering integration
+    with GitHub for things like issues, pull requests and more.
+
+    #+begin_src emacs-lisp
+      (use-package magit)
+
+      (use-package forge)
+    #+end_src
+
 * UI Configuration
 
 ** Basic Configuration
+
+   Get rid of all the extra window decorations, such as the scroll bars, tool
+   bars and the padding around the edge of the usable area.
    
    #+begin_src emacs-lisp
     (setq inhibit-startup-message t) ; Remove the splash screen
@@ -16,17 +126,42 @@
     (set-fringe-mode 0) ; Padding
   #+end_src
 
-** Font Configuration
+** Font
    
    #+begin_src emacs-lisp
      (set-face-attribute 'default nil :font "Fira Code" :height 100) ; Normal font size
    #+end_src
 
-* Mode Configuration
-  
-** Org Mode
+** Theme
 
-*** Babel Configuration
+   [[https://github.com/NicolasPetton/zerodark-theme][Zero Dark theme]]
+   
+   #+begin_src emacs-lisp
+     (use-package zerodark-theme
+       :init (load-theme 'zerodark t))
+   #+end_src
+
+** Miscellaneous
+   
+   Rainbow Delimiters mode simply adds colors to brackets in order to make it
+   easier to differentiate sets when they are nested deeply. Useful for anything
+   related to Lisp.
+   
+   #+begin_src emacs-lisp
+     (use-package rainbow-delimiters
+       :hook (prog-mode . rainbow-delimiters-mode))
+   #+end_src
+
+* Org Mode
+
+  Very powerful way to create documents, store configurations, time manage and
+  much, much more.
+
+  #+begin_src emacs-lisp
+    (use-package org)
+  #+end_src
+
+** Babel Configuration
 
     #+begin_src emacs-lisp
       (org-babel-do-load-languages
@@ -39,7 +174,7 @@
 	 (sh . t)))
     #+end_src
    
-*** Auto Tangle Configuration Files
+** Auto Tangle Configuration Files
 
     #+begin_src emacs-lisp
       (defun ando/org-babel-tangle-config ()
@@ -50,4 +185,5 @@
 
       (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'ando/org-babel-tangle-config)))
     #+end_src
+
 
