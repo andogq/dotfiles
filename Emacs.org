@@ -1,5 +1,5 @@
 #+title: Emacs Configuration
-#+property: header-args:emacs-lisp :tangle ./out/init.el :mkdirp yes
+#+property: header-args:emacs-lisp :tangle ./out/.config/emacs/init.el :mkdirp yes
 
 * Emacs
   

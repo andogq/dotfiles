@@ -1,0 +1,7 @@
+#+title: Readme
+
+This repo contains the files used to generate my dotfiles. It uses Org Mode to
+have the configuration and documentation side by side for clarity. The code
+blocks containing the configuration are then ~tangled~ into the actual
+configuration files in the ~out~ directory. From here, they can be symlinked
+into the actual sytem using ~stow out~.
