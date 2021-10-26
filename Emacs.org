@@ -1,0 +1,53 @@
+#+title Emacs Configuration
+#+property: header-args:emacs-lisp :tangle ./init.el
+
+* UI Configuration
+
+** Basic Configuration
+   
+   #+begin_src emacs-lisp
+    (setq inhibit-startup-message t) ; Remove the splash screen
+
+    (scroll-bar-mode -1) ; Disable scrollbar
+    (tool-bar-mode -1) ; Disable toolbar
+    (tooltip-mode -1) ; Disable tooltips
+    (menu-bar-mode -1) ; Remove the menu bar
+
+    (set-fringe-mode 0) ; Padding
+  #+end_src
+
+** Font Configuration
+   
+   #+begin_src emacs-lisp
+     (set-face-attribute 'default nil :font "Fira Code" :height 100) ; Normal font size
+   #+end_src
+
+* Mode Configuration
+  
+** Org Mode
+
+*** Babel Configuration
+
+    #+begin_src emacs-lisp
+      (org-babel-do-load-languages
+       'org-babel-load-languges
+       '((emacs-lisp . t)
+	 (python . t)
+	 (js . t)
+	 (C . t)
+	 (cpp . t)
+	 (sh . t)))
+    #+end_src
+   
+*** Auto Tangle Configuration Files
+
+    #+begin_src emacs-lisp
+      (defun ando/org-babel-tangle-config ()
+	(when (string-equal (buffer-file-name)
+			    (expand-file-name "~/dotfiles/Emacs.org"))
+	  (let ((org-confirm-babel-evaluate nil))
+	    (org-babel-tangle))))
+
+      (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'ando/org-babel-tangle-config)))
+    #+end_src
+
