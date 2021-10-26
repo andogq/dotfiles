@@ -126,6 +126,22 @@
     (set-fringe-mode 0) ; Padding
   #+end_src
 
+  Enable line numbers by default, but disable them on certain modes where they
+  don't really make much sense to be used.
+
+  #+begin_src emacs-lisp
+    (column-number-mode)
+    (global-display-line-numbers-mode t)
+
+    (dolist (mode '(
+		    org-mode-hook
+		    term-mode-hook
+		    shell-mode-hook
+		    eshell-mode-hook
+		    ))
+      (add-hook mode (lambda () (display-line-numbers-mode 0))))
+  #+end_src
+
 ** Font
    
    #+begin_src emacs-lisp
