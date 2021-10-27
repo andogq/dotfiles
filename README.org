@@ -5,3 +5,9 @@ have the configuration and documentation side by side for clarity. The code
 blocks containing the configuration are then ~tangled~ into the actual
 configuration files in the ~out~ directory. From here, they can be symlinked
 into the actual sytem using ~stow out~.
+
+* Notes:
+
+   - Terminal prompt is [[https://starship.rs][Starship]]
+   - Font is [[https://github.com/tonsky/FiraCode][Fira Code]]
+   - Forge requires some configuration (as noted in [[./Emacs.org][Emacs.org]])

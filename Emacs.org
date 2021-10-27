@@ -108,6 +108,23 @@
       (use-package forge
 	:after magit)
     #+end_src
+    
+*** Forge Configuration
+
+    1. Generate an API token for Github
+    2. Save it to ~\~/.authinfo~ in the form:
+
+       #+begin_src
+       machine api.github.com login andogq^forge password [INSERT_TOKEN]
+       #+end_src
+       
+    3. Store Github username in Git config
+
+       #+begin_src
+       git config --global user.name "Tom Anderson"
+       git config --global user.email "tom@ando.gq"
+       git config --global github.user "andogq"
+       #+end_src
 
 * UI Configuration
 
