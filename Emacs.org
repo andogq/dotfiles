@@ -84,6 +84,19 @@
        :diminish which-key-mode
        :config (setq which-key-idle-delay 0.3))
    #+end_src
+   
+** Backup Files
+
+   To stop backup files popping up everywhere, save them in one place.
+
+   #+begin_src emacs-lisp
+     (setq backup-directory-alist `(("." . "~/.saves"))
+	   backup-by-copying t
+	   delete-old-versions t
+	   kept-new-versions 6
+	   kept-old-versions 2
+	   version-control t)
+   #+end_src
 
 * Development
 
