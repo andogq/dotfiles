@@ -138,6 +138,65 @@
        git config --global github.user "andogq"
        #+end_src
 
+** Languages
+
+*** Language Server
+
+    Provides integration between a language server for a programming language
+    and the buffer, for a better development experience.
+
+    #+begin_src emacs-lisp
+      (use-package lsp-mode
+	:commands lsp
+	:hook ((typescript-mode js2-mode web-mode) . lsp)
+	:init (setq lsp-keymap-prefix "C-c l")
+	:config (lsp-enable-which-key-integration t))
+    #+end_src
+    
+**** Company Mode
+
+     In order to have completions within the buffer, company mode can be used
+     alongside lsp-mode.
+
+     #+begin_src emacs-lisp
+       (use-package company
+	 :after lsp-mode
+	 :hook (prog-mode . company-mode)
+	 :bind
+	 (:map company-active-map
+		     ("<tab>" . company-complete-selection))
+	 (:map lsp-mode-map
+	       ("<tab>" . company-indent-or-complete-common))
+	 :custom
+	 (company-minimum-prefix-length 1)
+	 (company-idle-delay 0.0))
+     #+end_src
+
+*** TypeScript
+
+    #+begin_src emacs-lisp
+      (use-package typescript-mode
+	:mode "\\.ts\\'"
+	:config (setq typescript-indent-level 4))
+    #+end_src
+    
+*** JavaScript
+
+    #+begin_src emacs-lisp
+      (use-package js2-mode
+	:mode "\\.jsx?\\'"
+	:config
+	(add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode))
+	(setq js2-mode-show-strict-warnings nil))
+    #+end_src
+    
+*** HTML
+
+    #+begin_src emacs-lisp
+      (use-package web-mode
+	:mode "(\\.\\(html?\\|ejs\\|tsx?\\|jsx?\\)\\'")
+    #+end_src
+
 * UI Configuration
 
 ** Basic Configuration
