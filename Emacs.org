@@ -28,6 +28,18 @@
     (use-package diminish)
   #+end_src
 
+** Environment
+
+   Depending on how Emacs is started, it can miss environment variables present
+   within a user's shell. This can be overcome using the ~exec-path-from-shell~
+   package, as seen below.
+
+   #+begin_src emacs-lisp
+     (use-package exec-path-from-shell
+       :if (memq window-system '(mac ns x))
+       :init (exec-path-from-shell-initialize))
+   #+end_src
+
 ** Completion
 
    Ivy is used as the completion engine. Counsel is also installed in order to
