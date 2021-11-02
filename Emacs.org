@@ -161,7 +161,7 @@
     #+begin_src emacs-lisp
       (use-package lsp-mode
 	:commands lsp
-	:hook ((typescript-mode js2-mode web-mode) . lsp)
+	:hook ((typescript-mode js-mode web-mode) . lsp)
 	:init (setq lsp-keymap-prefix "C-c l")
 	:config (lsp-enable-which-key-integration t))
     #+end_src
@@ -195,18 +195,23 @@
     
 *** JavaScript
 
+    Use ~js2-mode~ as a minor mode for ~js-mode~ in order to get proper JSX
+    syntax highlighting, and have the JSX highlighting happen in all JS
+    files. Normally the highlighting only happens if ~React~ is imported or the
+    file ends in ~.jsx~.
+    
     #+begin_src emacs-lisp
       (use-package js2-mode
-	:mode "\\.jsx?\\'"
-	:config
-	(add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode))
-	(setq js2-mode-show-strict-warnings nil))
+	:hook (js-mode-hook . js2-minor-mode))
+
+      (setq js-jsx-syntax t)
     #+end_src
     
 *** HTML
 
     #+begin_src emacs-lisp
       (use-package web-mode
+	:ensure t
 	:mode "(\\.\\(html?\\|ejs\\|tsx?\\|jsx?\\)\\'")
     #+end_src
 
