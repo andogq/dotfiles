@@ -259,6 +259,45 @@
     to automatically detect the prompt and to keep the working directory and
     Emac's directory in sync.
 
+* File Management
+  
+** Dired
+
+   Dired can be used for file management.
+
+   #+begin_src emacs-lisp
+     (use-package dired
+       :ensure nil
+       :commands (dired dired-jump)
+       :bind (("C-x C-j" . dired-jump))
+       :custom ((dired-listing-switches "-agho --group-directories-first")))
+   #+end_src
+
+   To prevent dired from opening multiple buffers, ~dired-single~ can be used.
+
+   #+begin_src emacs-lisp
+     (use-package dired-single
+       :bind (:map dired-mode-map
+		   ([remap dired-find-file] . 'dired-single-buffer)
+		   ([remap dired-mouse-find-file-other-window] . 'dired-single-buffer-mouse)
+		   ([remap dired-up-directory] . 'dired-single-up-directory)))
+   #+end_src
+
+   ~all-the-icons-dired~ can add icons to the buffer
+
+   #+begin_src emacs-lisp
+     (use-package all-the-icons-dired
+       :hook (dired-mode . all-the-icons-dired-mode))
+   #+end_src
+
+   Control file associations, so dired can open in other programs.
+
+   #+begin_src emacs-lisp
+     (use-package dired-open
+       :config (setq dired-open-extensions '(("png" . "open -a Preview")
+					     ("jpg" . "open -a Preview"))))
+   #+end_src
+
 * UI Configuration
 
 ** Basic Configuration
@@ -290,6 +329,7 @@
 		    vterm-mode-hook
 		    shell-mode-hook
 		    eshell-mode-hook
+		    dired-mode-hook
 		    ))
       (add-hook mode (lambda () (display-line-numbers-mode 0))))
   #+end_src
@@ -299,6 +339,14 @@
    #+begin_src emacs-lisp
      (set-face-attribute 'default nil :font "Fira Code" :height 100) ; Normal font size
    #+end_src
+
+*** All The Icons
+
+    Sets up icon fonts to be used within Emacs.
+
+    #+begin_src emacs-lisp
+      (use-package all-the-icons)
+    #+end_src
 
 ** Theme
 
