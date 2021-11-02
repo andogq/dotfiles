@@ -165,6 +165,12 @@
 	:init (setq lsp-keymap-prefix "C-c l")
 	:config (lsp-enable-which-key-integration t))
     #+end_src
+
+    ~lsp-ui~ provides additional UI features for ~lsp-mode~.
+
+    #+begin_src emacs-lisp
+      (use-package lsp-ui)
+    #+end_src
     
 **** Company Mode
 
