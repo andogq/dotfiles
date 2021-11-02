@@ -221,6 +221,44 @@
 	:mode "(\\.\\(html?\\|ejs\\|tsx?\\|jsx?\\)\\'")
     #+end_src
 
+** Terminal
+
+   ~term-mode~ is the built in terminal emulator.
+
+   #+begin_src emacs-lisp
+     (use-package term
+       :config
+       (setq explicit-shell-file-name "zsh")
+       (setq term-prompt-regexp "^❯ *"))
+   #+end_src
+
+   For better color support, ~eterm-256color~ can be installed. ~tic~ will need
+   to be installed on the system, which is available normally with ~ncurses~.
+
+   #+begin_src emacs-lisp
+     (use-package eterm-256color
+       :hook (term-mode . eterm-256color-mode))
+   #+end_src
+
+*** vterm
+
+    Another terminal emulator which is written in C instead of Emacs (unlike
+    ~term~, which is built in). Because of this it is faster and has a number of
+    other advantages.
+
+    [[https://github.com/akermu/emacs-libvterm][Github]]
+   
+   #+begin_src emacs-lisp
+     (use-package vterm)
+   #+end_src
+
+    ~cmake~, ~libtool~ and ~libvterm~ must be preinstalled, and the module will
+    be compiled on the first launch of the terminal.
+
+    Some extra configuration will be required, as per the Github page, in order
+    to automatically detect the prompt and to keep the working directory and
+    Emac's directory in sync.
+
 * UI Configuration
 
 ** Basic Configuration
@@ -249,6 +287,7 @@
     (dolist (mode '(
 		    org-mode-hook
 		    term-mode-hook
+		    vterm-mode-hook
 		    shell-mode-hook
 		    eshell-mode-hook
 		    ))
