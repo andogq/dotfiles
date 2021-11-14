@@ -169,10 +169,10 @@
 
     #+begin_src emacs-lisp
       (use-package lsp-mode
-	:commands lsp
-	:hook ((typescript-mode js-mode web-mode) . lsp)
-	:init (setq lsp-keymap-prefix "C-c l")
-	:config (lsp-enable-which-key-integration t))
+        :commands lsp
+        :hook ((typescript-mode js-mode web-mode) . lsp)
+        :init (setq lsp-keymap-prefix "C-c l")
+        :config (lsp-enable-which-key-integration t))
     #+end_src
 
     ~lsp-ui~ provides additional UI features for ~lsp-mode~.
@@ -238,6 +238,24 @@
 
     #+begin_src emacs-lisp
       (use-package json-mode)
+    #+end_src
+
+*** Rust
+
+    Rustic is a fork of rust-mode, and adds a number of features not present by
+    default in rust-mode. Based on configuration from [[https://robert.kra.hn/posts/2021-02-07_rust-with-emacs/][this blog]].
+
+    #+begin_src emacs-lisp
+      (use-package rustic
+        :bind (:map rustic-mode-map
+                    ("M-j" . lsp-ui-imenu)
+                    ("M-?" . lsp-find-references)
+                    ("C-c C-c l" . flycheck-list-errors)
+                    ("C-c C-c a" . lsp-execute-code-action)
+                    ("C-c C-c r" . lsp-rename)
+                    ("C-c C-c q" . lsp-workspace-restart)
+                    ("C-c C-c Q" . lsp-workspace-shutdown)
+                    ("C-c C-c s" . lsp-rust-analyzer-status)))
     #+end_src
 
 ** Terminal
@@ -354,9 +372,22 @@
   #+end_src
 
 ** Font
+
+   Fira Code is used as the font, but the Nerd Font version is installed which
+   patches the font to include special programming related icons.
    
    #+begin_src emacs-lisp
-     (set-face-attribute 'default nil :font "Fira Code" :height 100) ; Normal font size
+     (set-face-attribute 'default nil :font "FiraCode Nerd Font" :height 120) ; Normal font size
+   #+end_src
+
+   To enable font ligatures, ~fira-code-mode~ can be used which takes care of
+   all the background work that is required to show the ligatures.
+
+   #+begin_src emacs-lisp
+     (use-package fira-code-mode
+       :custom (fira-code-mode-disabled-ligatures '("[]" "#{" "#(" "#_" "#_(" "x"))
+       :config (fira-code-mode-set-font)
+       :hook prog-mode)
    #+end_src
 
 *** All The Icons
