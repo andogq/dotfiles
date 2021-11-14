@@ -100,10 +100,11 @@
 
 ** Miscellaneous
 
-   Spaces instead of tabs for indentation.
+   Spaces instead of tabs for indentation, and set the tab width to 4.
 
    #+begin_src emacs-lisp
-     (setq  indent-tabs-mode nil)
+     (setq-default indent-tabs-mode nil)
+     (setq-default tab-width 4)
    #+end_src
 
 * Development
@@ -222,12 +223,21 @@
       (setq js-indent-level 4)
     #+end_src
     
-*** HTML
+*** HTML/Svelte
 
     #+begin_src emacs-lisp
       (use-package web-mode
-	:ensure t
-	:mode "(\\.\\(html?\\|ejs\\|tsx?\\|jsx?\\)\\'")
+	:mode "\\.\\(html?\\|svelte\\)\\'"
+	:custom
+	(web-mode-markup-indent-offset 4)
+	(web-mode-css-indent-offset 4)
+	(web-mode-code-indent-offset 4))
+    #+end_src
+
+*** JSON
+
+    #+begin_src emacs-lisp
+      (use-package json-mode)
     #+end_src
 
 ** Terminal
